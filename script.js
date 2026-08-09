@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
      only want one inbox, leave WEB3FORMS_KEY_2 as '' and only the first
      will be used.
      Get a free key at web3forms.com (no login, just an email address). */
-  const WEB3FORMS_KEY_1 = 'PASTE_KEY_FOR_sjr@shreejaihindroadlines.in';
+  const WEB3FORMS_KEY_1 = 'eba70d41-e0f4-4ed1-960f-06c467959a0c';
   const WEB3FORMS_KEY_2 = 'PASTE_KEY_FOR_jaihind8989@yahoo.com';
 
   /* ---------- Mobile menu ---------- */
