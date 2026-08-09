@@ -1,0 +1,84 @@
+WHY YOUR SITE IS NOT SHOWING IN GOOGLE — AND HOW TO FIX IT
+===========================================================
+
+THIS IS NOT A KEYWORD PROBLEM.
+
+Your page already contains every keyword you asked for. Adding more will not
+help, and past a point it starts to hurt.
+
+The real reason is simpler: GOOGLE DOES NOT KNOW YOUR SITE EXISTS YET.
+
+A brand new website is invisible until Google discovers, crawls and indexes
+it. That normally takes 3 days to 4 weeks. Nothing you write on the page
+speeds that up. You have to tell Google directly.
+
+
+STEP 1 — CHECK WHETHER YOU ARE INDEXED AT ALL  (30 seconds)
+-----------------------------------------------------------
+Search Google for exactly this:
+
+    site:jaihindroadlines.in
+
+  - Results shown  -> you ARE indexed; it is a ranking problem, go to Step 4
+  - "did not match any documents" -> you are NOT indexed; do Steps 2 and 3
+
+
+STEP 2 — GOOGLE SEARCH CONSOLE   (the single most important step)
+------------------------------------------------------------------
+1. Go to search.google.com/search-console
+2. Add property -> choose "Domain" -> enter jaihindroadlines.in
+3. It gives you a TXT record. Add it in Cloudflare:
+      Cloudflare -> your domain -> DNS -> Records -> Add record
+      Type: TXT   Name: @   Content: (paste the value Google gave you)
+4. Back in Search Console, click Verify
+5. Left menu -> Sitemaps -> enter  sitemap.xml  -> Submit
+6. Top search bar -> paste https://jaihindroadlines.in/ -> press Enter
+   -> click "REQUEST INDEXING"
+
+That last button is what actually gets you crawled quickly. Usually 1-7 days.
+
+
+STEP 3 — GOOGLE BUSINESS PROFILE   (matters MORE than the website)
+-------------------------------------------------------------------
+For searches like "transport near me" or "best transport in Kolhapur", Google
+shows the MAP RESULTS above every website. You cannot appear there without a
+Business Profile. No amount of website SEO substitutes for this.
+
+1. Go to business.google.com -> Add your business
+2. Name:     Shree Jaihind Roadlines
+   Category: Trucking Company  (add: Transportation Service, Logistics Service)
+   Address:  Parasmani Chamber, Near K.M.T Petrol Pump, Opp. Masjid,
+             P. B. Road, Shiroli, Kolhapur, Maharashtra 416122
+   Phone:    +91 93266 68989
+   Website:  https://jaihindroadlines.in
+3. Google posts a verification postcard or calls you. Complete it.
+4. Add 10+ photos of your trucks, office and loading operations
+5. Ask 5-10 regular clients to leave a review
+
+USE THE EXACT SAME name, address and phone everywhere. Any mismatch between
+your website, Business Profile and directory listings weakens all of them.
+
+
+STEP 4 — IF INDEXED BUT STILL NOT RANKING
+------------------------------------------
+Ranking for competitive terms takes 3-6 months. It is driven mostly by things
+OFF your website:
+
+  a) Business Profile reviews (biggest local factor)
+  b) Listings on IndiaMART, Justdial, Sulekha, TradeIndia — free, and they
+     both send traffic and act as citations
+  c) Local backlinks: Kolhapur Chamber of Commerce, transport associations,
+     your clients' supplier pages
+  d) Consistent name/address/phone across all of the above
+
+Meanwhile you WILL rank quickly for your own brand name
+("Shree Jaihind Roadlines") because nobody competes for it.
+
+
+REALISTIC TIMELINE
+------------------
+  Week 1      indexed, findable by brand name
+  Month 1-2   appearing for long-tail terms, Business Profile gaining traction
+  Month 3-6   competing for "transport in Kolhapur" type searches
+
+Anyone promising faster than this is selling something.
