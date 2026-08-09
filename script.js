@@ -54,12 +54,46 @@ document.addEventListener('DOMContentLoaded', () => {
      the visitor has already typed into the enquiry form. */
   const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
 
+  /* ---------- Contact validation ----------
+     An Indian mobile number: 10 digits starting 6-9, optionally written
+     with a +91 / 91 / 0 prefix, spaces, dashes or brackets — all common
+     ways people actually type their number.
+     Email: a plain, forgiving shape check, not full RFC validation. */
+  function isValidIndianPhone(raw) {
+    const digits = raw.replace(/\D/g, '');
+    let d = digits;
+    if (d.length === 12 && d.startsWith('91')) d = d.slice(2);
+    else if (d.length === 11 && d.startsWith('0')) d = d.slice(1);
+    return /^[6-9]\d{9}$/.test(d);
+  }
+  function isValidEmail(raw) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw.trim());
+  }
+
+  function setFieldError(id, message) {
+    const field = document.getElementById(id).closest('.field');
+    const errorEl = document.getElementById(id + 'Error');
+    field.classList.add('has-error');
+    if (errorEl) errorEl.textContent = message;
+  }
+  function clearFieldError(id) {
+    const field = document.getElementById(id).closest('.field');
+    const errorEl = document.getElementById(id + 'Error');
+    field.classList.remove('has-error');
+    if (errorEl) errorEl.textContent = '';
+  }
+  ['phone', 'email'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => clearFieldError(id));
+  });
+
   function buildWaMessage() {
-    const name = val('name'), phone = val('phone'), from = val('from'), to = val('to'),
-          weight = val('weight'), message = val('message');
+    const name = val('name'), phone = val('phone'), email = val('email'),
+          from = val('from'), to = val('to'), weight = val('weight'), message = val('message');
     const lines = ['Hi, I\'d like a freight quote from Shree Jaihind Roadlines.'];
     if (name) lines.push(`Name: ${name}`);
     if (phone) lines.push(`Phone: ${phone}`);
+    if (email) lines.push(`Email: ${email}`);
     if (from || to) lines.push(`Route: ${from || '—'} to ${to || '—'}`);
     if (weight) lines.push(`Approx. weight: ${weight}`);
     if (message) lines.push(`Details: ${message}`);
@@ -76,12 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
      succeed, so an enquiry is never simply lost — and never shown as an
      error either. */
   function buildMailto() {
-    const name = val('name'), phone = val('phone');
+    const name = val('name'), phone = val('phone'), email = val('email');
     const route = [val('from'), val('to')].filter(Boolean).join(' to ') || '—';
     const subject = `Freight enquiry — ${name || 'website'}`;
     const body =
       `Name: ${name || '—'}\n` +
       `Phone: ${phone || '—'}\n` +
+      `Their email: ${email || '—'}\n` +
       `Route: ${route}\n` +
       `Approx. weight: ${val('weight') || '—'}\n\n` +
       `Cargo details:\n${val('message') || '—'}`;
@@ -158,11 +193,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = val('name'), phone = val('phone');
+    const name = val('name'), phone = val('phone'), email = val('email');
 
-    if (!name || !phone) {
-      showStatus('err', 'Please add your name and a phone number so we can get back to you.');
-      (!name ? document.getElementById('name') : document.getElementById('phone')).focus();
+    clearFieldError('phone');
+    clearFieldError('email');
+
+    if (!name) {
+      showStatus('err', 'Please add your name so we know who is asking.');
+      document.getElementById('name').focus();
+      return;
+    }
+
+    // Each field, if filled in at all, must actually be valid — we don't
+    // want to accept a mistyped number or email and silently lose the lead.
+    let hasError = false;
+    if (phone && !isValidIndianPhone(phone)) {
+      setFieldError('phone', 'Enter a valid 10-digit Indian mobile number, e.g. 98765 43210.');
+      hasError = true;
+    }
+    if (email && !isValidEmail(email)) {
+      setFieldError('email', 'Enter a valid email address, e.g. you@example.com.');
+      hasError = true;
+    }
+    if (hasError) {
+      showStatus('err', 'Please correct the highlighted field below.');
+      (document.getElementById('phone').closest('.field').classList.contains('has-error')
+        ? document.getElementById('phone') : document.getElementById('email')).focus();
+      return;
+    }
+
+    // At least one working way to reach the visitor back is required —
+    // phone alone, email alone, or both are all fine.
+    if (!phone && !email) {
+      showStatus('err', 'Please add a valid Indian phone number or email address so we can get back to you.');
+      document.getElementById('phone').focus();
       return;
     }
 
@@ -174,7 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sent = await sendViaWeb3Forms({
       subject: `Freight enquiry — ${name}`,
       name,
-      phone,
+      phone: phone || '—',
+      email: email || '—',
       route,
       weight: val('weight') || '—',
       message: val('message') || '—',
@@ -186,6 +251,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (sent) {
       form.reset();
+      clearFieldError('phone');
+      clearFieldError('email');
       showStatus('ok', "Thanks — your enquiry has been sent. We'll be in touch shortly.");
     } else {
       // Never surfaced as an error — open the visitor's email app instead,

@@ -409,8 +409,13 @@ table.spec td:first-child{ font-weight:650; color:var(--slate-900); }
 .f-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 .field{ margin-bottom:16px; }
 .field label{ display:block; font-size:.82rem; font-weight:600; color:var(--slate-700); margin-bottom:6px; }
+.field-optional{ font-weight:500; color:var(--slate-500); font-size:.78rem; }
 .field input,.field textarea{ width:100%; padding:12px 14px; border:1px solid var(--slate-200); border-radius:var(--r-sm); font-family:var(--font); font-size:.96rem; color:var(--slate-900); background:var(--white); transition:border-color .16s,box-shadow .16s; }
 .field input:focus,.field textarea:focus{ outline:none; border-color:var(--navy-600); box-shadow:0 0 0 3px rgba(20,65,143,.14); }
+.field-error{ display:none; margin-top:6px; font-size:.82rem; font-weight:600; color:#B3261E; }
+.field.has-error input{ border-color:#B3261E; }
+.field.has-error input:focus{ box-shadow:0 0 0 3px rgba(179,38,30,.14); }
+.field.has-error .field-error{ display:block; }
 .field textarea{ resize:vertical; min-height:104px; }
 .form-note{ margin-top:13px; font-size:.83rem; color:var(--slate-500); }
 .form-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; }
